@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Site Settings</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            background: #f4f6f9;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        /* HEADER */
+        .main-header {
+            height: 60px;
+            background: #f4f6f9;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .menu-btn {
+            background: #1f6fb2;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: -240px;
+            width: 240px;
+            height: calc(100% - 60px);
+            background: #2f3e4e;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 14px 18px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .sidebar ul li a:hover {
+            background: #1f2a36;
+        }
+
+        /* CONTENT */
+        .container {
+            margin-top: 20px;
+            max-width: 1100px;
+        }
+
+        .section-title {
+            background: #ff6c60;
+            color: #fff;
+            padding: 10px 15px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .panel-heading {
+            font-weight: bold;
+        }
+
+        .logo-preview {
+            height: 60px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            background: #fff;
+        }
+
+        /* ===== MODERN TOGGLE CHECKBOX ===== */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .toggle-group input {
+            display: none;
+        }
+
+        .toggle-slider {
+            width: 44px;
+            height: 22px;
+            background: #ccc;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .toggle-text {
+            margin-left: px;
+        }
+
+        .toggle-slider::before {
+            content: "";
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .toggle-group input:checked+.toggle-slider {
+            background: #28a745;
+        }
+
+        .toggle-group input:checked+.toggle-slider::before {
+            transform: translateX(22px);
+        }
+
+
+        .btn-save {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div>
+            <img src="images/logo.png" class="logo" id="brandLogo">
+            <button class="menu-btn" id="menuBtn">Menu</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="employee.html"><i class="fa fa-user"></i> Employees</a></li>
+            <li><a href="addsalary.html"><i class="fa fa-money-bill"></i> Salary</a></li>
+            <li><a href="financial.html"><i class="fa fa-chart-line"></i> Financial</a></li>
+            <li><a href="settings.html"><i class="fa fa-gear"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <div class="container">
+
+        <!-- PAGE TITLE -->
+        <div class="section-title">
+            <i class="fa fa-gear"></i> SITE SETTINGS
+        </div>
+
+        <!-- ================= FIELD SETTINGS ================= -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-sliders"></i> Editable Fields Control
+            </div>
+            <div class="panel-body">
+
+                <label class="toggle-group">
+                    <input type="checkbox" id="edit_pt_pf">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Allow editing PT+PF</span>
+                </label>
+
+                <label class="toggle-group">
+                    <input type="checkbox" id="edit_esi">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Allow editing ESI</span>
+                </label>
+
+                <label class="toggle-group">
+                    <input type="checkbox" id="edit_income_tax">
+                    <span class="toggle-slider"></span>
+                    <span class="toggle-text">Allow editing INCOME TAX</span>
+                </label>
+
+
+
+
+
+                <button class="btn btn-success btn-save" id="saveFieldSettings">
+                    <i class="fa fa-save"></i> Save Field Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= LOGIN SETTINGS ================= -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-lock"></i> Login Credentials
+            </div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" class="form-control">
+                </div>
+
+                <hr>
+
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="current_password" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="new_password" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="confirm_password" class="form-control">
+                </div>
+
+                <button class="btn btn-primary btn-save" id="updateCredentials">
+                    <i class="fa fa-key"></i> Update Credentials
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= BRAND SETTINGS ================= -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-image"></i> Brand Logo
+            </div>
+            <div class="panel-body">
+
+                <p>Current Logo:</p>
+                <img src="images/logo.png" class="logo-preview" id="logoPreview">
+
+                <hr>
+
+                <div class="form-group">
+                    <label>Upload New Logo</label>
+                    <input type="file" id="logoFile" accept="image/*">
+                </div>
+
+                <button class="btn btn-warning btn-save" id="uploadLogo">
+                    <i class="fa fa-upload"></i> Update Logo
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        const API = "http://localhost:8000";
+
+        /* Sidebar toggle */
+        document.getElementById("menuBtn").onclick = () => {
+            document.getElementById("sidebar").classList.toggle("open");
+        };
+
+        /* Apply settings from backend */
+        function applySiteSettings() {
+            if (!window.siteSettings) return;
+
+            $("#edit_pt_pf").prop("checked", Number(siteSettings.edit_pt_pf) === 1);
+            $("#edit_esi").prop("checked", Number(siteSettings.edit_esi) === 1);
+            $("#edit_income_tax").prop("checked", Number(siteSettings.edit_income_tax) === 1);
+
+            if (siteSettings.brand_logo) {
+                $("#brandLogo").attr("src", siteSettings.brand_logo + "?t=" + Date.now());
+                $("#logoPreview").attr("src", siteSettings.brand_logo + "?t=" + Date.now());
+            }
+        }
+
+        /* Wait until main.js loads siteSettings */
+        const settingsWatcher = setInterval(() => {
+            if (window.siteSettings) {
+                applySiteSettings();
+                clearInterval(settingsWatcher);
+            }
+        }, 100);
+
+        /* Save field settings */
+        $("#saveFieldSettings").on("click", function () {
+            fetch(`${API}/save_site_settings`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    edit_pt_pf: $("#edit_pt_pf").is(":checked") ? 1 : 0,
+                    edit_esi: $("#edit_esi").is(":checked") ? 1 : 0,
+                    edit_income_tax: $("#edit_income_tax").is(":checked") ? 1 : 0
+                })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    alert(res.success ? "✅ Field settings saved" : "❌ Failed to save settings");
+                })
+                .catch(() => alert("❌ Server error"));
+        });
+
+        /* Logo preview */
+        $("#logoFile").on("change", function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = e => {
+                $("#logoPreview").attr("src", e.target.result);
+                $("#brandLogo").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        /* Upload logo */
+        $("#uploadLogo").on("click", function () {
+            const file = $("#logoFile")[0].files[0];
+            if (!file) return alert("Select a logo first");
+
+            fetch(`${API}/upload_logo`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": file.type },
+                body: file
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        $("#brandLogo").attr("src", res.brand_logo + "?t=" + Date.now());
+                        $("#logoPreview").attr("src", res.brand_logo + "?t=" + Date.now());
+                        alert("✅ Logo updated");
+                    }
+                });
+        });
+
+        $("#updateCredentials").on("click", function () {
+            const currentPassword = $("#current_password").val().trim();
+            const newPassword = $("#new_password").val().trim();
+            const confirmPassword = $("#confirm_password").val().trim();
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert("All password fields are required");
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert("New password and confirm password do not match");
+                return;
+            }
+
+            fetch("http://localhost:8000/update_credentials", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    current_password: currentPassword,
+                    new_password: newPassword,
+                    confirm_password: confirmPassword
+                })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.success) {
+                        alert("❌ " + (res.message || "Operation failed"));
+                        return;
+                    }
+
+                    alert("✅ " + (res.message || "Password updated successfully"));
+
+                    // Clear fields
+                    $("#current_password").val("");
+                    $("#new_password").val("");
+                    $("#confirm_password").val("");
+                })
+                .catch(() => alert("❌ Server error"));
+        });
+
+    </script>
+
+
+</body>
+
+</html>

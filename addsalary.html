@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Salary Slip</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        /* ---------- GLOBAL ---------- */
+        body {
+            background: #f5f7fa;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        /* ---------- TOP HEADER AREA ---------- */
+        .top-header {
+            background: #ffffff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 20px;
+        }
+
+        /* ---------- PAGE TITLE BAR (ADD SALARY) ---------- */
+        .page-title-bar {
+            background: #ff6c60;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* ---------- PANEL ---------- */
+        .panel {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-shadow: none;
+        }
+
+        .panel-heading {
+            background: #f8f8f8 !important;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .panel-body {
+            background: #fff;
+        }
+
+        /* ---------- FORM LABELS ---------- */
+        label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #333;
+        }
+
+        /* ---------- INPUTS & SELECT ---------- */
+        .form-control {
+            height: 34px;
+            font-size: 13px;
+            border-radius: 3px;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary {
+            background: #337ab7;
+            border-color: #2e6da4;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: #286090;
+        }
+
+        .btn-success {
+            font-weight: 600;
+        }
+
+        /* ---------- TABLE ---------- */
+        .table {
+            margin-top: 10px;
+        }
+
+        .table thead {
+            background: #d9d9d9;
+        }
+
+        .table thead th {
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: none !important;
+        }
+
+        .table tbody td {
+            font-size: 13px;
+            vertical-align: middle !important;
+        }
+
+        /* ---------- SECTION HEADERS (Select Email Template, Send Email) ---------- */
+        .section-header {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            font-weight: 600;
+            color: #337ab7;
+            margin-top: 20px;
+        }
+
+        .toggle-header {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .toggle-header i {
+            margin-right: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-header.open i {
+            transform: rotate(90deg);
+        }
+
+
+        /* ---------- MESSAGE BOX ---------- */
+        .headerMessageCls {
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .errorGreen {
+            background: #5cb85c;
+            color: #fff;
+        }
+
+        .errorRed {
+            background: #ff6c60;
+            color: #fff;
+        }
+
+        /* ---------- DROPDOWN TEMPLATE SELECT ---------- */
+        .dropdownClass {
+            width: 100%;
+            height: 34px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+        }
+
+        /* ---------- HEADER ---------- */
+        .main-header {
+            height: 60px;
+            background: #f4f6f9;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .menu-btn {
+            background: #1f6fb2;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .menu-btn:hover {
+            background: #155a94;
+        }
+
+        /* ---------- USER DROPDOWN ---------- */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-toggle {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .user-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 110%;
+            background: #fff;
+            border: 1px solid #ddd;
+            width: 160px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
+            display: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 12px;
+            text-decoration: none;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f4f6f9;
+        }
+
+        .dropdown-menu .logout {
+            color: #c62828;
+            border-top: 1px solid #eee;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: -240px;
+            width: 240px;
+            height: calc(100% - 60px);
+            background: #2f3e4e;
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            border-bottom: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        .sidebar ul li a {
+            display: block;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .sidebar ul li a:hover {
+            background: #1f2a36;
+        }
+
+        .paid-row {
+            background-color: #e6ffe6 !important;
+        }
+
+        .unpaid-row {
+            background-color: #ffe6e6 !important;
+        }
+
+        .inactive-row {
+            background-color: #ffe6e6 !important;
+        }
+
+        .inactive-row input {
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        #salaryTable input.form-control {
+            width: 80px;
+            text-align: right;
+        }
+
+        
+
+        /* ---------- RESPONSIVE TABLE (MATCHES YOUR SCREENSHOT LOGIC) ---------- */
+        @media (max-width: 1000px) {
+
+            table td:nth-child(2),
+            table td:nth-child(4),
+            table td:nth-child(7),
+            table td:nth-child(8),
+            table td:nth-child(18),
+            table th:nth-child(2),
+            table th:nth-child(4),
+            table th:nth-child(7),
+            table th:nth-child(8),
+            table th:nth-child(18) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-left">
+            <img id="brandLogo" class="logo">
+            <button class="menu-btn" id="menuBtn">Menu</button>
+        </div>
+
+        <div class="header-right">
+            <div class="user-dropdown">
+                <div class="user-toggle" id="userToggle">
+                    <img src="images/user-icon.png" class="user-icon">
+                    <span>Welcome</span>
+                    <i class="fa fa-caret-down"></i>
+                </div>
+
+                <div class="dropdown-menu" id="userMenu">
+
+                    <a href="#" class="logout" id="logoutBtn">
+                        <i class="fa fa-sign-out-alt"></i> Logout
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="employee.html"><i class="fa fa-user"></i> Add / Edit Employee</a></li>
+            <li><a href="addsalary.html"><i class="fa fa-money-bill"></i> Add Salary</a></li>
+            <li><a href="financial.html"><i class="fa fa-chart-line"></i> Financial Records</a></li>
+            <li><a href="settings.html"><i class="fa fa-gear"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="page-title-bar">
+                ▢ ADD SALARY
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Add Salary</div>
+
+                <div class="panel-body">
+
+                    <!-- Filters -->
+                    <div class="row">
+
+                        <div class="col-lg-2">
+                            <label>Month</label>
+                            <select id="monthSelect" class="form-control">
+                                <option>January</option>
+                                <option>February</option>
+                                <option>March</option>
+                                <option>April</option>
+                                <option>May</option>
+                                <option>June</option>
+                                <option>July</option>
+                                <option>August</option>
+                                <option>September</option>
+                                <option>October</option>
+                                <option>November</option>
+                                <option>December</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label>Year</label>
+                            <select id="yearSelect" class="form-control">
+                                <option>2026</option>
+                                <option>2027</option>
+                                <option>2028</option>
+                                <option>2029</option>
+                                <option>2030</option>
+                                <option>2031</option>
+                                <option>2032</option>
+                                <option>2033</option>
+                                <option>2034</option>
+                                <option>2035</option>
+                                <option>2036</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label>&nbsp;</label>
+                            <button id="loadBtn" class="btn btn-primary form-control">Load</button>
+                        </div>
+
+
+                        <div class="col-lg-1">
+                            <label>&nbsp;</label>
+                            <button id="expBtn" class="btn btn-primary form-control" onclick="exportCSV()"> <i
+                                    class="fa fa-download"></i> Export</button>
+                        </div>
+                    </div>
+                    <hr>
+                    <hr>
+                    <!-- Table -->
+                    <table id="salaryTable" class="table table-striped table-bordered">
+                        <thead style="background:#ccc">
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Company</th>
+                                <th>PT+PF</th>
+                                <th>ESI</th>
+                                <th>Income Tax</th>
+                                <th>Incentives</th>
+                                <th>Other</th>
+                                <th>TDS</th>
+                                <th>Salary</th>
+                                <th>Final Salary</th>
+                                <th>Status</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div class="text-right" style="margin-top:15px;">
+                        <button id="saveAllBtn" class="btn btn-success">
+                            <i class="fa fa-save"></i> Save All
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Select Email Template -->
+            <!-- <div class="section-header toggle-header" id="emailTemplateToggle">
+                <i class="fa fa-caret-right"></i> Select Email Template
+            </div>
+
+            <div class="panel panel-default" id="emailTemplatePanel" style="display:none;">
+                <div class="panel-body">
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label>Company Name</label>
+                            <select class="form-control">
+                                <option>Company A</option>
+                                <option>Company B</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label>Template Name</label>
+                            <select class="form-control">
+                                <option>salary_template.html</option>
+                                <option>bonus_template.html</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label>&nbsp;</label>
+                            <button class="btn btn-success form-control">
+                                Save Template
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div> -->
+
+            <!-- Send Email -->
+            <div class="section-header">Send Email</div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <!-- Row 1 -->
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label>Month</label>
+                            <select id="emailMonth" class="form-control">
+                                <option>January</option>
+                                <option>February</option>
+                                <option>March</option>
+                                <option>April</option>
+                                <option>May</option>
+                                <option>June</option>
+                                <option>July</option>
+                                <option>August</option>
+                                <option>September</option>
+                                <option>October</option>
+                                <option>November</option>
+                                <option>December</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label>Year</label>
+                            <select id="emailYear" class="form-control">
+                                <option>2026</option>
+                                <option>2027</option>
+                                <option>2028</option>
+                                <option>2029</option>
+                                <option>2030</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <label>Employee</label>
+                            <select id="emailEmployee" class="form-control">
+                                <option value="-1">ALL</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <label>&nbsp;</label>
+                            <button id="sendSalaryEmailBtn" class="btn btn-primary form-control">
+                                Send Email
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+
+       document.addEventListener("DOMContentLoaded", () => {
+    const applySettings = () => {
+        if (!window.siteSettings) return;
+
+        $("#edit_pt_pf").prop("checked", Number(siteSettings.edit_pt_pf) === 1);
+        $("#edit_esi").prop("checked", Number(siteSettings.edit_esi) === 1);
+        $("#edit_income_tax").prop("checked", Number(siteSettings.edit_income_tax) === 1);
+    };
+
+    // try immediately
+    applySettings();
+
+    // re-apply once settings load
+    const observer = setInterval(() => {
+        if (window.siteSettings) {
+            applySettings();
+            clearInterval(observer);
+        }
+    }, 100);
+});
+
+        /* MENU TOGGLE */
+        const menuBtn = document.getElementById("menuBtn");
+        const sidebar = document.getElementById("sidebar");
+
+        menuBtn.onclick = () => {
+            sidebar.classList.toggle("open");
+        };
+        $("#emailTemplateToggle").on("click", function () {
+            $("#emailTemplatePanel").slideToggle(200);
+            $(this).toggleClass("open");
+
+            let icon = $(this).find("i");
+            icon.toggleClass("fa-caret-right fa-caret-down");
+        });
+
+        /* USER DROPDOWN */
+        const userToggle = document.getElementById("userToggle");
+        const userMenu = document.getElementById("userMenu");
+
+        userToggle.onclick = () => {
+            userMenu.style.display = userMenu.style.display === "block" ? "none" : "block";
+        };
+
+        document.addEventListener("click", function (e) {
+            if (!userToggle.contains(e.target)) {
+                userMenu.style.display = "none";
+            }
+        });
+
+
+
+        /* DATATABLE */
+        $(document).ready(function () {
+
+            salaryTable = $('#salaryTable').DataTable({
+                destroy: true,
+                ordering: false
+            });
+
+        });
+
+        $("#uploadLogo").click(() => {
+            const file = $("#logoFile")[0].files[0];
+            if (!file) {
+                alert("Select a logo first");
+                return;
+            }
+
+            fetch("http://localhost:8000/upload_logo", {
+                method: "POST",
+                credentials: "include",
+                body: file
+            })
+                .then(r => r.json())
+                .then(res => {
+                    alert("✅ Logo updated");
+                    $("#brandLogo").attr("src", res.brand_logo);
+                })
+                .catch(() => alert("❌ Logo upload failed"));
+        });
+
+
+
+        /* LOAD SALARY RECORDS */
+        $("#loadBtn").on("click", function () {
+            const month = $("#monthSelect").val();
+            const year = $("#yearSelect").val();
+
+            fetch(`${API}/fetch_salary_overview?month=${month}&year=${year}`, {
+                credentials: "include"
+            })
+                .then(r => r.json())
+                .then(resp => {
+                    salaryTable.clear();
+
+                    resp.data.forEach(row => {
+
+                        let statusText = row.status;
+
+                        const status = (row.status || "").trim().toLowerCase();
+
+                        if (status === "unpaid") {
+                            statusText = `
+                                <span class="label label-danger">Unpaid</span>
+                                
+                            `;
+                        } else {
+                            statusText = `<span class="label label-success">Paid</span>`;
+                        }
+
+
+                        const rowNode = salaryTable.row.add([
+                            row.employee_id,
+                            row.full_name,
+                            row.company || "",
+
+                            // PT + PF (readonly)
+                            `<input class="form-control ptpf" value="${row.pro_tax + row.pf}" readonly>`,
+
+                            // ESI (readonly)
+                            `<input class="form-control esi" value="${row.esi ?? 0}" readonly>`,
+
+                            // Income Tax (readonly – slab based later)
+                            `<input class="form-control income-tax"
+      value="${row.income_tax ?? 0}" readonly>`,
+
+                            // Incentives
+                            `<input class="form-control incentive" value="${row.incentive ?? 0}">`,
+
+                            // Other deductions / additions
+                            `<input class="form-control other" value="${row.other ?? 0}">`,
+
+                            // TDS
+                            `<input class="form-control tds" value="${row.tds ?? 0}">`,
+
+                            // Salary (CTC)
+                            `<input class="form-control ctc" value="${row.ctc ?? 0}">`,
+
+                            // Final Salary
+                            `<input class="form-control" value="${row.final_salary ?? 0}" readonly>`,
+
+                            statusText,
+
+                            // Email button
+                            `<button class="btn btn-xs btn-primary send-mail-btn"
+      data-emp-id="${row.employee_id}"
+      data-email="${row.email}">
+      <i class="fa fa-paper-plane"></i> Send
+   </button>`
+
+                        ]).node();
+
+                        const $row = $(rowNode)
+                            .attr("data-employee-id", row.employee_id)
+                            .attr("data-status", row.status || "Unpaid");
+
+                        applyFieldPermissions($row);
+                        // 🟢 PRELOAD LAST PAID SALARY FOR NEW MONTH
+                        if (row.is_new === 1) {
+                            preloadLastSalary(
+                                $row,
+                                row.employee_id,
+                                month,
+                                year
+                            );
+                        }
+
+
+                        // 🔴 IF EMPLOYEE IS INACTIVE
+                        if (row.active === 0) {
+                            $row.addClass("inactive-row");
+
+                            // ❌ Disable all inputs
+                            $row.find("input").prop("disabled", true);
+                        }
+                    });
+
+                    salaryTable.draw();
+                });
+        });
+
+        function applyFieldPermissions(tr) {
+            const inputs = tr.find("input.form-control");
+
+            const PT_PF = 0;
+            const ESI = 1;
+            const INCOME_TAX = 2;
+
+            if (!window.siteSettings) return;
+            inputs.eq(0).prop("readonly", siteSettings.edit_pt_pf !== "1");
+            inputs.eq(1).prop("readonly", siteSettings.edit_esi !== "1");
+            inputs.eq(2).prop("readonly", siteSettings.edit_income_tax !== "1");
+
+        }
+
+        function preloadLastSalary(tr, empId, month, year) {
+            fetch(`${API}/get_last_salary?employee_id=${empId}&month=${month}&year=${year}`, {
+                credentials: "include"
+            })
+                .then(r => r.json())
+                .then(res => {
+
+                    if (!res.exists) return;
+
+                    const s = res.salary;
+                    const inputs = tr.find("input.form-control");
+
+                    // --- Statutory / Structural (carry forward) ---
+                    inputs.eq(0).val((s.pro_tax ?? 0) + (s.pf ?? 0)); // PT+PF
+                    inputs.eq(1).val(s.esi ?? 0);                    // ESI
+                    inputs.eq(2).val(s.income_tax ?? 0);           // Income Tax (optional carry)
+
+                    inputs.eq(6).val(s.ctc ?? 0);                    // Salary (CTC)
+
+                    // --- Variable (RESET every month) ---
+                    inputs.eq(3).val(0); // incentive ❌ carry
+                    inputs.eq(4).val(0); // other ❌ carry
+                    inputs.eq(5).val(0); // tds (if monthly adjustment)
+
+                    // 🔥 Recalculate fresh
+                    recalcRow(tr);
+                });
+        }
+
+        function recalcRow(tr) {
+            const inputs = tr.find("input.form-control");
+
+            const incentive = Number(inputs.eq(3).val()) || 0; // Incentives
+            const other = Number(inputs.eq(4).val()) || 0; // Other
+            const tds = Number(inputs.eq(5).val()) || 0; // TDS
+            const ctc = Number(inputs.eq(6).val()) || 0; // Salary (CTC)
+            const esi = Number(inputs.eq(1).val()) || 0; // ESI
+            const incomeTax = Number(inputs.eq(2).val()) || 0; // Income Tax
+
+
+            if (!ctc) {
+                inputs.eq(7).val(-2000); // PT+PF only
+                return;
+            }
+
+            // ---- SAME LOGIC AS salary_calculator.html ----
+            const basic = Math.round(ctc * 0.5);
+            const hra = Math.round(basic * 0.4);
+            const conveyance = 1600;
+            const medical = 1250;
+            const employerPF = 1800;
+            const gratuity = Math.round(basic * 0.0481);
+
+            const special = Math.round(
+                ctc - (basic + hra + conveyance + medical + employerPF + gratuity)
+            );
+
+            const gross = Math.round(
+                basic + hra + conveyance + medical + special
+            );
+
+            // ✅ Incentive ADDED
+            // ❌ Other & TDS DEDUCTED
+            const net = gross + incentive - 2000 - other - tds - esi - incomeTax;
+
+            inputs.eq(7).val(net); // Final Salary
+        }
+
+        $(document).on("input", ".incentive, .other, .tds, .ctc", function () {
+            recalcRow($(this).closest("tr"));
+        });
+
+
+
+        function loadPaidEmployees() {
+            const month = $("#emailMonth").val();
+            const year = $("#emailYear").val();
+
+            fetch(`${API}/get_paid_employees?month=${month}&year=${year}`, {
+                credentials: "include"
+            })
+                .then(r => r.json())
+                .then(res => {
+                    const $emp = $("#emailEmployee");
+                    $emp.empty();
+
+                    if (res.data.length === 0) {
+                        $emp.append(`<option value="">No paid employees</option>`);
+                        return;
+                    }
+
+                    $emp.append(`<option value="-1">ALL</option>`);
+
+                    res.data.forEach(e => {
+                        $emp.append(
+                            `<option value="${e.id}">
+                ${e.full_name} (${e.email})
+            </option>`
+                        );
+                    });
+                });
+        }
+
+        $("#emailMonth, #emailYear").on("change", function () {
+            loadPaidEmployees();
+        });
+
+
+        $(document).on("click", ".send-mail-btn", function () {
+
+            const empId = $(this).data("emp-id");
+            const month = $("#monthSelect").val();
+            const year = $("#yearSelect").val();
+
+            fetch("http://localhost:8000/send_salary_email", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    month: month,
+                    year: year,
+                    employee_id: empId
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    alert(data.message || "Mail sent");
+                })
+                .catch(() => {
+                    alert("❌ Mail sending failed");
+                });
+        });
+
+
+        $("#sendSalaryEmailBtn").on("click", function () {
+
+            const month = $("#emailMonth").val();
+            const year = $("#emailYear").val();
+            const employeeId = $("#emailEmployee").val(); // ALL or ID
+
+            fetch("http://localhost:8000/send_salary_email", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    month,
+                    year,
+                    employee_id: employeeId
+                })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    alert(res.message);
+                })
+                .catch(() => {
+                    alert("❌ Failed to send emails");
+                });
+        });
+
+
+        $(document).on("click", ".pay-btn", function () {
+            const empId = $(this).data("emp");
+            const tr = $(`#salaryTable tbody tr[data-employee-id='${empId}']`);
+
+            if (!tr.attr("data-saved")) {
+                alert("Please Save salary before paying");
+                return;
+            }
+
+            tr.attr("data-status", "Paid");
+            tr.addClass("paid-row");
+            tr.find("input").prop("disabled", true);
+
+            tr.find("td").eq(13).html(
+                `<span class="label label-success">Paid</span>`
+            );
+        });
+        $("#salaryTable tbody tr").attr("data-saved", "1");
+
+        function exportCSV() {
+            const month = $("#monthSelect").val();
+            const year = $("#yearSelect").val();
+
+            fetch(`${API}/export_salary_csv?month=${month}&year=${year}`, {
+                credentials: "include"
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(err => {
+                            alert(err.message || "No data found");
+                            throw new Error("No CSV");
+                        });
+                    }
+                    return res.blob();
+                })
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `${month}_${year}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => { });
+        }
+
+        $("#expBtn").on("click", exportCSV);
+
+
+
+        $("#saveAllBtn").on("click", function () {
+
+            const month = $("#monthSelect").val();
+            const year = $("#yearSelect").val();
+
+            let payload = [];
+
+            $("#salaryTable tbody tr").each(function () {
+
+                const tr = $(this);
+                const status = tr.attr("data-status");
+                if (tr.hasClass("inactive-row")) return;
+                const inputs = tr.find("input.form-control");
+
+                payload.push({
+                    employee_id: tr.attr("data-employee-id"),
+                    month,
+                    year,
+                    incentive: inputs.eq(3).val(), // Incentives
+                    other: inputs.eq(4).val(),     // Other
+                    tds: inputs.eq(5).val(),       // TDS
+                    esi: inputs.eq(1).val(),          // esi ✅
+                    income_tax: inputs.eq(2).val(),   // income tax ✅
+                    ctc: inputs.eq(6).val()        // Salary (CTC) ✅
+                });
+
+
+            });
+
+            if (payload.length === 0) {
+                alert("Nothing to save");
+                return;
+            }
+
+            fetch(`${API}/save_bulk_salary`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+                .then(r => r.json())
+                .then(res => {
+                    alert("✅ Salaries saved successfully");
+                    $("#loadBtn").click(); // reload fresh data
+                })
+                .catch(() => alert("❌ Save failed"));
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Offer Letter</title>
+
+    <style>
+        /* ------------------ Global Layout ------------------ */
+        body {
+            font-family: "Segoe UI", Arial;
+            background: #ddd;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            align-items: flex-start;
+        }
+
+        /* FULL WIDTH HEADER LINE */
+        .header-line {
+            border: 0;
+            border-top: 2px solid #000;
+            height: 0;
+            margin: 18px 0;
+
+            display: block;
+            position: relative;
+
+            width: 100%;
+        }
+
+        /* ------------------ Input Form Panel ------------------ */
+        .form-box {
+            width: 300px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+        }
+
+        .form-box input,
+        .form-box textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 6px 0 10px 0;
+        }
+
+        /* ------------------ Pages Wrapper ------------------ */
+        .pages {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            flex: 1;
+        }
+
+        /* ------------------ Offer Letter Page Layout ------------------ */
+        .page {
+            width: 800px;
+            min-height: 1120px;
+            background: white;
+            padding: 70px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .25);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        /* ------------------ Page Header (Logo + Address) ------------------ */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        ul li::marker {
+            content: "✔  ";
+        }
+
+        .gl li::marker {
+            content: "•  ";
+        }
+
+        /* ------------------ Page Title ------------------ */
+        .title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .page p {
+            text-align: justify;
+            text-justify: inter-word;
+            line-height: 1.35;
+        }
+
+        /* Force table borders on webpage also */
+        table {
+            border-collapse: collapse !important;
+        }
+
+        table,
+        table tr,
+        table th,
+        table td {
+            border: 1px solid #000 !important;
+        }
+
+        /* FORCE full grid for Annexure II table */
+        .annex2-table,
+        .annex2-table tr,
+        .annex2-table th,
+        .annex2-table td {
+            border: 1px solid #000 !important;
+        }
+
+        .annex2-table {
+            border-collapse: separate !important;
+            /* KEY FIX */
+            border-spacing: 0 !important;
+        }
+
+        .bind-address {
+            white-space: pre-line;
+        }
+
+        .timing-select {
+            width: 100%;
+            padding: 9px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+
+        /* Optional Hover Effect */
+        .timing-select:hover {
+            border-color: #888;
+        }
+
+        /* Optional Focus Glow */
+        .timing-select:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 4px rgba(26, 115, 232, 0.6);
+        }
+
+        .footer {
+            margin-top: auto;
+            position: relative;
+        }
+
+        .footer-line {
+            border-top: 2px solid #000;
+            height: 0;
+            width: 100%;
+            position: relative;
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            align-items: center;
+            padding-top: 6px;
+        }
+
+        /* ------------------ Print Formatting ------------------ */
+        @media print {
+
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            .header-line {
+                display: block !important;
+                position: relative !important;
+
+                width: calc(100% + 34mm) !important;
+                left: -17mm !important;
+            }
+
+            .footer-line {
+                width: calc(100% + 34mm);
+                position: relative;
+                left: -17mm;
+                margin-top: 8px;
+                margin-bottom: 8px;
+            }
+
+            .footer-content {
+                padding: 0 17mm 6mm 17mm;
+                /* left / right / bottom space */
+                font-size: 12px;
+            }
+
+            .page:nth-of-type(4) {
+                padding-top: 14mm !important;
+                padding-bottom: 10mm !important;
+            }
+
+            /* tighten spacing of acceptance section */
+            .page:nth-of-type(4) p {
+                margin-bottom: 8px !important;
+            }
+
+            .page:nth-of-type(2) {
+                padding-bottom: 18mm !important;
+            }
+
+            body {
+                background: white !important;
+                margin: 0 !important;
+            }
+
+            .form-box {
+                display: none !important;
+            }
+
+            .container {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .page p {
+                text-align: justify !important;
+                text-justify: inter-word;
+                line-height: 1.35;
+            }
+
+            /* Hyphenation like MS Word */
+            .page {
+                -webkit-hyphens: auto;
+                -ms-hyphens: auto;
+                hyphens: auto;
+            }
+
+            .page {
+                width: 210mm;
+                height: 297mm;
+                box-sizing: border-box;
+
+                /* slightly reduced so nothing gets cut */
+                padding: 16mm 17mm 16mm 17mm;
+
+                margin: 0;
+                box-shadow: none !important;
+
+                page-break-after: always;
+                page-break-inside: avoid;
+                overflow: hidden;
+            }
+
+            /* Slight print shrink — like MS Word does silently */
+            .page,
+            .page * {
+                font-size: 93% !important;
+                line-height: 1.28 !important;
+            }
+
+            .title {
+                font-size: 18px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .page:last-child {
+                page-break-after: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- ================= USER INPUT PANEL ================= -->
+        <div class="form-box">
+            <h2>Enter Details</h2>
+
+            <label>Date</label>
+            <input type="date" id="dateInput">
+
+            <label>Full Name</label>
+            <input type="text" id="nameInput">
+
+            <label>Address</label>
+            <textarea id="addressInput"></textarea>
+
+            <label>Monthly Salary (CTC)</label>
+            <input type="number" id="salaryInput" placeholder="Enter monthly salary">
+
+            <label>Mobile</label>
+            <input type="text" id="mobileInput">
+
+            <label>UID Number</label>
+            <input type="text" id="uidInput">
+
+            <label>Position / Designation</label>
+            <input type="text" id="positionInput">
+
+            <label>Joining Date</label>
+            <input type="date" id="joiningInput">
+
+            <label>Work Timing</label>
+            <select id="timingSelect" class="timing-select">
+                <option value="">-- Select Work Timing --</option>
+                <option value="day">09:00 AM to 06:00 PM</option>
+                <option value="evening">01:00 PM to 10:00 PM</option>
+                <option value="late">03:00 PM to 12:00 AM</option>
+                <option value="night">06:00 PM to 04:00 AM</option>
+            </select>
+
+            <button onclick="window.print()">Print Letter</button>
+        </div>
+
+        <!-- ================= PAGES WRAPPER ================= -->
+        <div class="pages">
+
+            <!-- ================= PAGE 1 ================= -->
+            <div class="page">
+
+                <div class="page-header boxed-header">
+                    <div>
+                        <img src="https://www.f5websolutions.com/assets/logo.png" style="height:40px;">
+                        <br>
+                        <strong>F5 Web Solutions Pvt. Ltd.</strong><br>
+                        Think Career, Think F5!
+                    </div>
+
+                    <div class="header-right">
+                        216, 2nd Floor, Aurora Towers<br>
+                        East Wing<br>
+                        Camp, Pune 411001
+                    </div>
+                </div>
+
+                <hr class="header-line">
+
+                <div class="title" style="text-decoration: underline;">
+                    Employment Offer Letter
+                </div>
+
+                <!-- Top Section -->
+                <p>
+                    <strong><span class="bind" data-field="date">________</span></strong><br>
+                    <strong><span class="bind" data-field="name">________</span></strong><br>
+                    <span class="bind bind-address" data-field="address">________</span><br>
+                    Mobile Number: <span class="bind" data-field="mobile">________</span><br>
+                    UID Number: <span class="bind" data-field="uid">________</span>
+                </p>
+
+                <p>
+                    Dear <strong><span class="bind" data-field="name">________</span></strong>
+                </p>
+
+                <!-- Main Offer Text -->
+                <p>
+                    This offer letter (the <strong>“Offer Letter”</strong>) is a response to your application
+                    for employment with <strong>F5 Web Solutions </strong>Pune and your subsequent
+                    interview. We, <strong>F5 Web Solutions Pvt. Ltd.</strong> (the “Employer”),
+                    are pleased to make an offer to you to join F5 Web Solutions at our Pune Office
+                    on the following terms and conditions:
+                </p>
+
+                <p>
+                    <strong>Position / Designation:</strong>
+                    <span class="bind" data-field="position">________</span>
+                </p><br>
+
+                <p style="margin-top:-7px;">
+                    <strong>Joining Date:</strong>
+                    Employee is required to report to duty on
+                    <span class="bind" data-field="joining">________</span>
+                </p><br>
+
+                <p style="margin-top:-7px;">
+                    <strong>Regular Work Timings:</strong>
+                    Monday to Friday from
+                    <span class="bind" data-field="timing">________</span>.
+                    Employee is entitled to a 1(one) hour break per working day.
+                </p><br>
+
+                <p style="margin-top:-7px;">
+                    <strong>Remuneration:</strong>
+                    Salary breakup and benefits at the commencement of service are
+                    provided in Annexure-I & II.
+                </p><br>
+
+                <p style="margin-top:-7px;">
+                    <strong>Offer Validity:</strong>
+                    This offer is valid for a period of 1 day from the date of receipt of
+                    this Offer Letter. If we do not receive email/written acceptance within
+                    the stipulated period, this offer stands revoked.
+                </p>
+
+                <p>
+                    We look forward to your joining F5 Web Solutions for a successful association.
+                </p>
+
+                <p>
+                    Yours Sincerely<br>
+                    <strong>For F5 Web Solutions Pvt. Ltd.</strong><br><br>
+                    <strong>Dhaval Makadia</strong><br>
+                    <img src="images/Picture1.jpg" style="height:100px;margin-top:20px;margin-left:15px;">
+                </p>
+                <div class="footer">
+                    <div class="footer-line"></div>
+
+                    <div class="footer-content">
+                        <span>Confidential</span>
+                        <span>F5</span>
+                        <span class="pageno"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 2 ================= -->
+            <div class="page">
+
+                <!-- ------------------ Page Header ------------------ -->
+                <div class="page-header boxed-header">
+                    <div>
+                        <img src="https://www.f5websolutions.com/assets/logo.png" style="height:40px;">
+                        <br>
+                        <strong>F5 Web Solutions Pvt. Ltd.</strong><br>
+                        Think Career, Think F5!
+                    </div>
+
+                    <div class="header-right">
+                        216, 2nd Floor, Aurora Towers<br>
+                        East Wing<br>
+                        Camp, Pune 411001
+                    </div>
+                </div>
+
+                <hr class="header-line">
+
+                <!-- ---------------- End Header ---------------- -->
+                <!-- ---------------- Page Title ---------------- -->
+                <div class="title">
+                    Terms of Employment
+                </div>
+                <!-- ---------------- Page Content ---------------- -->
+                <p>
+                    Employee’s employment is offered with a clear understanding that this employment is
+                    <strong>exclusive</strong>, and the position is a <strong>full-time position</strong>. The Employee
+                    shall devote
+                    their full professional time, attention and energies to the Company’s business and shall not
+                    undertake
+                    any other part-time / full-time work without prior written consent from the Company.
+                </p>
+
+                <p>
+                    <strong>Duties, Obligations and Responsibilities:</strong>
+                    The Employee’s duties, obligations, and responsibilities shall include without limitation all
+                    responsibilities mentioned in the Employee Handbook. During the period of your employment, your
+                    services could be deputed at the sole discretion of the Management to any of our clients to do work
+                    pertaining to or incidental to the clients business.
+                </p>
+
+                <p>
+                    <strong>Probation Period:</strong>
+                    Initially Employee will be on probation period for 90 days (the “Probation Period”). During the
+                    Probation Period if the Employee’s work is found to be satisfactory in all respects, the Employee’s
+                    employment will be confirmed
+                </p>
+
+                <p>
+                    Performance will be evaluated regularly during the probationary period and annually thereafter.
+                    During the probation period, if Employee’s work is not found satisfactory, Employer reserves the
+                    right to extend the Probation Period for a one time additional 30 (Thirty) days extension or to
+                    terminate Employee’s services without assigning any reason thereof. Any and all communication will
+                    be intimated to Employee in writing.
+                </p>
+
+                <p>
+                    During probation period, either party may terminate employment with
+                    (Fifteen) 15 days’ notice.
+                </p>
+
+                <p>
+                    <strong>Professional Commitment & Code of Conduct:</strong>
+                    All employees are required to comply with company policies. Employee’s work in the company will be
+                    subject to the policies, rules, and regulations of the company. An essential condition to the
+                    Employee’s employment is to abide by the company policies and all other rules notified from time to
+                    time through the Supplementary Documents.
+                </p>
+
+                <p>
+                    You represent that you have provided the Company with full and accurate documentation of your last
+                    drawn compensation. This offer is contingent upon the satisfactory completion of background
+                    investigations including employment history and personal references.
+                </p>
+
+                <p>
+                    <strong>Representations & Warranties:</strong>
+                    Employee represents to have provided the Employer with full and accurate documentation of their last
+                    drawn compensation.
+                </p>
+
+                <p>
+                    <strong>Background Check:</strong>
+                    This Offer Letter is contingent upon the satisfactory completion of background investigations
+                    including employment history and personal references
+                </p>
+
+                <!-- ACCEPTANCE LINE -->
+                <p style="display:flex; justify-content:space-between; font-weight:bold;">
+                    <span>➤ Read, Understood and Accepted.</span>
+                    <span style="margin-right: 120px;">Employee Signature: </span>
+                </p>
+                <div class="footer">
+                    <div class="footer-line"></div>
+
+                    <div class="footer-content">
+                        <span>Confidential</span>
+                        <span>F5</span>
+                        <span class="pageno"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!---------------- PAGE 3 EXACT CONTENT ---------------->
+            <div class="page">
+
+                <div class="page-header boxed-header">
+                    <div>
+                        <img src="https://www.f5websolutions.com/assets/logo.png" style="height:40px;">
+                        <br>
+                        <strong>F5 Web Solutions Pvt. Ltd.</strong><br>
+                        Think Career, Think F5!
+                    </div>
+
+                    <div class="header-right">
+                        216, 2nd Floor, Aurora Towers<br>
+                        East Wing<br>
+                        Camp, Pune 411001
+                    </div>
+                </div>
+
+                <hr class="header-line">
+
+                <p><strong>Confidential Information:</strong><b> During the term of employment Employee may not disclose
+                        any confidential information including the terms of this Offer Letter, Salary and any other
+                        benefits
+                        with clients and other employees.</b> Any information which is internal to F5 Web solutions
+                    should not
+                    be shared with client without explicit approval from Employer. Non Adherence to this clause will
+                    attract strict disciplinary action. Further details on disciplinary action shall be included in the
+                    Supplementary Documents.</p>
+
+                <p><strong>Intellectual Property Rights:</strong> The Company retains ownership of the intellectual
+                    property rights relating to copyrights, patents, design, trademark, trade secrets, and any other
+                    registered or unregistered intellectual property created, collaborated, or invented by all employees
+                    of Employer during the term of employment.</p>
+
+                <p><strong>Confidentiality and Non-Disclosure:</strong> Employee acknowledges that during their
+                    employment, confidential information will be disclosed and, any unauthorized revelation of such
+                    information to any individual or party or for use other than for the Employer’s purposes would be
+                    the violation of employment terms and may result in immediate termination of Employee’s employment.
+                </p>
+
+                <p><strong>Conflict of Interest:</strong> In the event of conflict of interest, during the term of
+                    employment the Employee will be obligated to prioritize the interest of Employer over all other
+                    interests including Employee’s interest.</p>
+
+                <p><strong>Tax Implications:</strong> Employee will solely be responsible for declarations and
+                    implications arising thereof for all personal income tax purposes. Employer will make deductions of
+                    tax as required by law. Any false declarations in respect of financial disclosures shall be a cause
+                    for immediate termination at Employer’s discretion.</p>
+
+                <p><strong>Leave Policy:</strong> All leave policies mentioned in the Supplementary Documents shall
+                    apply. Employee is entitled for 10 Paid leaves and 10 Indian holidays during the calendar year.
+                    Leaves will be on proportionate (pro rata) basis from the date of joining. Paid Leaves cannot be
+                    carried forward.</p>
+
+                <p><strong>Disciplinary Policy:</strong> Non-adherence to the terms of employment will attract strict
+                    disciplinary action. Further details on disciplinary action shall be included in the Supplementary
+                    Documents.</p>
+
+                <p><strong>Termination & Notice Period:</strong> Either the Employer or Employee may at any time
+                    terminate this agreement by giving in writing to the other party a 30 (Thirty) day notice of their
+                    intent to terminate employment.</p>
+
+                <p>The Employer may immediately and without notice, terminate Employee’s employment, in case of any
+                    substantial breach, continued unwillingness or inability to perform the duties, responsibilities, or
+                    obligations assigned to Employee.</p>
+
+
+                <p style="display:flex;justify-content:space-between;font-weight:bold;">
+                    <span>➤ Read, Understood and Accepted</span>
+                    <span style="margin-right: 120px;">Employee Signature: </span>
+                </p>
+                <div class="footer">
+                    <div class="footer-line"></div>
+
+                    <div class="footer-content">
+                        <span>Confidential</span>
+                        <span>F5</span>
+                        <span class="pageno"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!---------------- PAGE 4 EXACT CONTENT ---------------->
+            <div class="page">
+
+                <div class="page-header boxed-header">
+                    <div>
+                        <img src="https://www.f5websolutions.com/assets/logo.png" style="height:40px;">
+                        <br>
+                        <strong>F5 Web Solutions Pvt. Ltd.</strong><br>
+                        Think Career, Think F5!
+                    </div>
+
+                    <div class="header-right">
+                        216, 2nd Floor, Aurora Towers<br>
+                        East Wing<br>
+                        Camp, Pune 411001
+                    </div>
+                </div>
+
+                <hr class="header-line">
+
+                <p><strong>Return of Property:</strong> Upon termination for any cause, Employee shall be required to
+                    deliver to the Employer all documents, money or other materials belonging to the Employer or, for
+                    which the Employer is answerable to others which are in Employee’s custody or charge. Employer will
+                    pay for return of such belongings from the Employee provided that the place of pickup is the same
+                    place the belongings were delivered to during the term of the employment. In the event the Employee
+                    is having to return belongings from a different location, such return shall be performed at the
+                    Employee’s sole expense.</p>
+
+                <p><strong>Non-Compete, Non Solicitation, and No Disparagement:</strong> Upon termination of employment
+                    for any reason,
+                    Employee agrees to not join the Employer’s clients or client’s organizations or work with clients on
+                    any commercial terms for the period of 2 (two) years from date of termination. Employee shall not
+                    influence or cause any employees including independent contractors and clients of Employer to leave
+                    Employer for a minimum period of 2 (two) years from the date of termination of employment. Employee
+                    and Employer agree not to make any negative or defamatory statements, regardless of such statements
+                    being true or false, in public or private about the employment. </p>
+
+                <p>In case the company has agreed to pay you <strong> Joining Bonus</strong>, notice period buy out from
+                    Previous
+                    employer, Guest House accommodation, Travel Expenses or any other expenses incurred at the time of
+                    joining, such expenses are completely recoverable from the employee in case employee resign from the
+                    services of the company or terminated before completion of one year of service.</p>
+
+                <p><strong>Work From Home:</strong> Employee is required to ensure the following requirements</p>
+                <ul>
+                    <li>Stable Power Supply, no power failures or disruption</li>
+                    <li>Broadband Internet Link – 100 mbps</li>
+                    <li>Work Environment – Table, Chair, sufficient light, no background noise during meetings</li>
+                </ul>
+
+                <p><strong>GENERAL PROVISIONS</strong></p>
+                <ul class="gl">
+                    <li>
+                        <p><strong>Governing Law:</strong> This Offer Letter / Agreement shall be governed by the laws
+                            of India.
+                        </p>
+                    </li>
+                    <li>
+                        <p><strong>Jurisdiction:</strong> Any disputes shall be subject to the exclusive jurisdiction of
+                            courts
+                            in Pune, India.</p>
+                    </li>
+                </ul>
+                <p>I hereby agree to and accept the terms of employment offer and shall report for duty on the joining
+                    date.</p>
+
+
+                <p style="display:flex; justify-content:space-between; font-weight:bold;">
+                    <span>➤ Read, Understood and Accepted.</span>
+                    <span style="margin-right: 120px;">Employee Signature: </span>
+                </p>
+
+                <p style="font-weight:bold;">
+                    Name: <span class="bind" style="font-weight: normal" data-field="name"></span>
+                </p>
+
+                <p style="font-weight:bold;">
+                    Date: <span class="bind" style="font-weight: normal" data-field="date"></span>
+                </p>
+                <p style="font-weight:bold;">
+                    Place: <span class="bind" style="font-weight: normal" data-field="address"></span>
+                </p>
+                <div class="footer">
+                    <div class="footer-line"></div>
+
+                    <div class="footer-content">
+                        <span>Confidential</span>
+                        <span>F5</span>
+                        <span class="pageno"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGE 5 ================= -->
+            <div class="page">
+
+                <div class="page-header boxed-header">
+                    <div>
+                        <img src="https://www.f5websolutions.com/assets/logo.png" style="height:40px;">
+                        <br>
+                        <strong>F5 Web Solutions Pvt. Ltd.</strong><br>
+                        Think Career, Think F5!
+                    </div>
+
+                    <div class="header-right">
+                        216, 2nd Floor, Aurora Towers<br>
+                        East Wing<br>
+                        Camp, Pune 411001
+                    </div>
+                </div>
+
+                <hr class="header-line">
+
+                <h2 style="margin-top:40px;">Annexure-I</h2>
+
+                <table style="
+        width: 520px;
+        border-collapse: collapse;
+        font-size:14px;">
+
+                    <tr>
+                        <th colspan="3" style="
+                border:1px solid black;
+                padding:8px;
+                background:#f2f2f2;
+                text-align:center;">
+                            Salary Breakup Annexure - I
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th style="border:1px solid black;padding:6px;">Components In salary</th>
+                        <th style="border:1px solid black;padding:6px;">Per month</th>
+                        <th style="border:1px solid black;padding:6px;">Per annum</th>
+                    </tr>
+
+                    <tr>
+                        <td>Basic Salary</td>
+                        <td id="basic_m"></td>
+                        <td id="basic_a"></td>
+                    </tr>
+
+                    <tr>
+                        <td>HRA</td>
+                        <td id="hra_m"></td>
+                        <td id="hra_a"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Conveyance allowance</td>
+                        <td id="conv_m"></td>
+                        <td id="conv_a"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Medical allowance</td>
+                        <td id="med_m"></td>
+                        <td id="med_a"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Special allowance</td>
+                        <td id="special_m"></td>
+                        <td id="special_a"></td>
+                    </tr>
+
+                    <tr style="font-weight:bold;">
+                        <td>Gross salary per month</td>
+                        <td id="gross_m"></td>
+                        <td id="gross_a"></td>
+                    </tr>
+
+                    <tr style="color:red;font-weight:bold;">
+                        <td>PF contribution by employee</td>
+                        <td id="pf_emp_m"></td>
+                        <td id="pf_emp_a"></td>
+                    </tr>
+
+                    <tr style="color:red;font-weight:bold;">
+                        <td>Professional Tax (PT)</td>
+                        <td id="pt_m"></td>
+                        <td id="pt_a"></td>
+                    </tr>
+
+                    <tr style="color:red;font-weight:bold;">
+                        <td>Total deductions (PF+PT)</td>
+                        <td id="total_ded_m"></td>
+                        <td id="total_ded_a"></td>
+                    </tr>
+
+                    <tr style="font-weight:bold;">
+                        <td>Net Salary (Gross-Total deductions)</td>
+                        <td id="net_m"></td>
+                        <td id="net_a"></td>
+                    </tr>
+
+                </table>
+
+                <p id="nightNote" style="margin-top:20px; display:none;">
+                    Note: Special Allowance includes Night Shift allowance of 10%.
+                </p>
+
+                <p>Salary shall be paid monthly by the 5<sup>th</sup> of next month</p>
+
+                <ul>
+                    <li>Payment shall be made via bank transfer to the Employee's designated account</li>
+                    <li>All applicable taxes, provident fund, and statutory deductions will be made where applicable
+                    </li>
+                </ul>
+
+                <h2>Annexure- II</h2>
+
+                <table class="annex2-table" style="width:520px;border-collapse:collapse;font-size:14px;">
+                    <tr>
+                        <th style="padding:6px;border:1px solid black;" colspan="3">
+                            Benefits Other Than Gross Amount Payable in Annexure - I
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <td style="border:1px solid black;padding:6px;">
+                            Employer contribution towards PF
+                        </td>
+                        <td style="border:1px solid black;padding:6px;" id="emppf_m">1,800</td>
+                        <td style="border:1px solid black;padding:6px;" id="emppf_a">21,600</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border:1px solid black;padding:6px;">
+                            Gratuity @ 4.81% of Basic
+                        </td>
+                        <td style="border:1px solid black;padding:6px;" id="gratuity_m">1,323</td>
+                        <td style="border:1px solid black;padding:6px;" id="gratuity_a">15,876</td>
+                    </tr>
+
+                    <tr>
+                        <td style="border:1px solid black;padding:6px;">
+                            Group Medical Insurance
+                        </td>
+                        <td style="border:1px solid black; padding:6px;" colspan="2">
+                            5 lacs Medical Cover for<br>
+                            Self and immediate family
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td style="border:1px solid black;padding:6px;">
+                            Personal Accident Cover
+                        </td>
+                        <td style="border:1px solid black; padding:6px;" colspan="2">10 lacs</td>
+                    </tr>
+                </table>
+
+                <p style="margin-top:40px;font-weight:bold;">Employee Signature:</p>
+
+                <div class="footer">
+                    <div class="footer-line"></div>
+
+                    <div class="footer-content">
+                        <span>Confidential</span>
+                        <span>F5</span>
+                        <span class="pageno"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        /* ===================== COMMON FIELD BINDING ===================== */
+        function bindField(inputId, field) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+
+            input.addEventListener("input", function () {
+                document.querySelectorAll(`[data-field="${field}"]`)
+                    .forEach(el => el.textContent = this.value || "________");
+            });
+        }
+
+        /* ===================== DATE FORMATTING ===================== */
+        function formatHyphenDate(dateStr) {
+            if (!dateStr) return "________";
+
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, "0");
+
+            const months = [
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            ];
+
+            return `${day}-${months[date.getMonth()]}-${date.getFullYear()}`;
+        }
+
+        /* Display format: 10 Dec 2025 */
+        function formatDisplayDate(dateStr) {
+            if (!dateStr) return "________";
+
+            const date = new Date(dateStr);
+            const day = date.getDate();
+
+            const months = [
+                "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+            ];
+
+            return `${day} ${months[date.getMonth()]} ${date.getFullYear()}`;
+        }
+
+        /* ===================== BIND NORMAL DATE ===================== */
+        const dateInput = document.getElementById("dateInput");
+
+        dateInput.addEventListener("input", function () {
+            document.querySelectorAll('[data-field="date"]').forEach(el => {
+                el.textContent = formatHyphenDate(this.value);
+            });
+        });
+
+        /* ===================== JOINING DATE ===================== */
+        const joiningInput = document.getElementById("joiningInput");
+
+        joiningInput.addEventListener("input", function () {
+            document.querySelectorAll('[data-field="joining"]').forEach(el => {
+                el.textContent = formatDisplayDate(this.value);
+            });
+        });
+
+        /* ===================== WORK TIMING DROPDOWN ===================== */
+        const timingSelect = document.getElementById("timingSelect");
+        const nightNote = document.getElementById("nightNote");
+
+        function toMinutes(timeStr) {
+            let [time, period] = timeStr.split(" ");
+            let [h, m] = time.split(":").map(Number);
+
+            if (period === "PM" && h !== 12) h += 12;
+            if (period === "AM" && h === 12) h = 0;
+
+            return h * 60 + m;
+        }
+
+        function isNightShift(text) {
+            const [startStr, endStr] = text.split(" to ");
+
+            let start = toMinutes(startStr.trim());
+            let end = toMinutes(endStr.trim());
+
+            // If end < start → crosses midnight → add 24 hrs
+            if (end < start) end += 24 * 60;
+
+            // Night window: 10 PM → 6 AM next day
+            const nightStart = 22 * 60; // 10:00 PM
+            const nightEnd = 30 * 60;   // 6:00 AM next day
+
+            // Real overlap check (not just touching)
+            return Math.max(start, nightStart) < Math.min(end, nightEnd);
+        }
+
+        timingSelect.addEventListener("change", function () {
+            const selectedText = this.options[this.selectedIndex].text;
+            const selectedValue = this.value;
+
+            let finalText = "________";
+
+            if (selectedValue !== "") finalText = selectedText;
+
+            document.querySelectorAll('[data-field="timing"]').forEach(el => {
+                el.textContent = finalText;
+            });
+
+            if (selectedValue !== "" && isNightShift(selectedText)) {
+                nightNote.style.display = "block";
+            } else {
+                nightNote.style.display = "none";
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const pages = document.querySelectorAll(".page");
+            const total = pages.length;
+
+            let i = 1;
+            pages.forEach(p => {
+                const pn = p.querySelector(".pageno");
+                if (pn) {
+                    pn.textContent = "Page " + i + " of " + total;
+                }
+                i++;
+            });
+        });
+
+        /* ===================== BIND SIMPLE FIELDS ===================== */
+        bindField("nameInput", "name");
+        bindField("addressInput", "address");
+        bindField("mobileInput", "mobile");
+        bindField("uidInput", "uid");
+        bindField("positionInput", "position");
+
+        /* ===================== SALARY CALCULATION ===================== */
+        const CONVEYANCE = 1600;
+        const MEDICAL = 1250;
+        const EMPLOYER_PF = 1800;
+        const EMPLOYEE_PF = 1800;
+        const PROFESSIONAL_TAX = 200;
+        const GRATUITY_RATE = 0.0481;
+
+        function fmt(num) {
+            return Math.round(num).toLocaleString("en-IN");
+        }
+
+        function calculateSalary() {
+            const main = Number(document.getElementById("salaryInput").value) || 0;
+            if (main === 0) return;
+
+            const basic = Math.round(main * 0.5);
+            const hra = Math.round(basic * 0.4);
+            const convey = CONVEYANCE;
+            const medical = MEDICAL;
+            const employerPF = EMPLOYER_PF;
+            const gratuity = Math.round(basic * GRATUITY_RATE);
+
+            const special = Math.round(main - (basic + hra + convey + medical + employerPF + gratuity));
+            const gross = Math.round(basic + hra + convey + medical + special);
+
+            const pfEmployee = EMPLOYEE_PF;
+            const pt = PROFESSIONAL_TAX;
+            const totalDeductions = pfEmployee + pt;
+            const net = gross - totalDeductions;
+
+            const mul12 = v => Math.round(v * 12);
+
+            // Annexure I
+            document.getElementById("basic_m").textContent = fmt(basic);
+            document.getElementById("basic_a").textContent = fmt(mul12(basic));
+
+            document.getElementById("hra_m").textContent = fmt(hra);
+            document.getElementById("hra_a").textContent = fmt(mul12(hra));
+
+            document.getElementById("conv_m").textContent = fmt(convey);
+            document.getElementById("conv_a").textContent = fmt(mul12(convey));
+
+            document.getElementById("med_m").textContent = fmt(medical);
+            document.getElementById("med_a").textContent = fmt(mul12(medical));
+
+            document.getElementById("special_m").textContent = fmt(special);
+            document.getElementById("special_a").textContent = fmt(mul12(special));
+
+            document.getElementById("gross_m").textContent = fmt(gross);
+            document.getElementById("gross_a").textContent = fmt(mul12(gross));
+
+            document.getElementById("pf_emp_m").textContent = fmt(pfEmployee);
+            document.getElementById("pf_emp_a").textContent = fmt(mul12(pfEmployee));
+
+            document.getElementById("pt_m").textContent = fmt(pt);
+            document.getElementById("pt_a").textContent = fmt(mul12(pt));
+
+            document.getElementById("total_ded_m").textContent = fmt(totalDeductions);
+            document.getElementById("total_ded_a").textContent = fmt(mul12(totalDeductions));
+
+            document.getElementById("net_m").textContent = fmt(net);
+            document.getElementById("net_a").textContent = fmt(mul12(net));
+
+            // Annexure II
+            document.getElementById("emppf_m").textContent = fmt(employerPF);
+            document.getElementById("emppf_a").textContent = fmt(mul12(employerPF));
+
+            document.getElementById("gratuity_m").textContent = fmt(gratuity);
+            document.getElementById("gratuity_a").textContent = fmt(mul12(gratuity));
+        }
+
+        // Trigger salary calc live
+        document.getElementById("salaryInput").addEventListener("input", calculateSalary);
+    </script>
+</body>
+
+</html>

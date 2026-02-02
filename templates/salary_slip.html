@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Salary Slip</title>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #4a4a4a;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .header img {
+      width: 140px;
+    }
+
+    .title {
+      border: 1px solid #cacaca;
+      background: #e8e8e8;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 8px;
+      margin-top: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px 0;
+      border-bottom: 1px solid #cacaca;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    .info-table td {
+      padding: 7px;
+      width: 50%;
+    }
+
+    .salary-table td {
+      vertical-align: top;
+    }
+
+
+    .salary-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #ccc;
+    }
+
+    .salary-table th {
+      border-bottom: 1px solid #ccc;
+      padding: 8px;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .salary-table th:first-child {
+      border-right: 1px solid #ccc;
+    }
+
+    .salary-table td:last-child {
+      border-left: 1px solid #ccc;
+    }
+
+    .inner-table,
+    .inner-table td {
+      border: none !important;
+    }
+
+    .salary-table .net td {
+      border-top: 1px solid #ccc;
+    }
+
+
+    .salary-table td {
+      padding: 9px;
+      vertical-align: top;
+    }
+
+    .inner-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .inner-table td:first-child {
+      width: 65%;
+    }
+
+    .inner-table td:last-child {
+      width: 35%;
+      text-align: right;
+    }
+
+
+
+    .right {
+      text-align: right;
+    }
+
+    .net {
+      background: #e8e8e8;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="header">
+      <img src="file:///C:/xampp/htdocs/ofletter/images/f5_logo.png">
+      <p>216, 2nd Floor, East Wing, Aurora Towers, Camp, Pune 411001</p>
+    </div>
+
+    <div class="title">SALARY SLIP</div>
+    <div class="subtitle">MONTH OF - &month& &year&</div>
+
+    <table class="info-table">
+      <tr>
+        <td><b>Employee Id :</b> <span style="float:right;">&empId&</span></td>
+        <td><b>Working Days:</b> <span style="float:right;">&workingDays&</span></td>
+      </tr>
+      <tr>
+        <td><b>Employee Name:</b> <span style="float:right;">&empName&</span></td>
+        <td><b>Designation:</b> <span style="float:right;">&empDesignation&</span></td>
+      </tr>
+    </table>
+
+    <table class="salary-table">
+      <tr>
+        <th width="50%" align="center">EARNINGS</th>
+        <th width="50%" align="center">DEDUCTIONS</th>
+      </tr>
+      <tr>
+        <td>
+          <table class="inner-table">
+
+            <tr>
+              <td>Basic</td>
+              <td align="right">&basic& Rs</td>
+            </tr>
+            <tr>
+              <td>HRA</td>
+              <td align="right">&hra& Rs</td>
+            </tr>
+            <tr>
+              <td>Conveyance</td>
+              <td align="right">&conveyance& Rs</td>
+            </tr>
+            <tr>
+              <td>Medical Allowance</td>
+              <td align="right">&medicalAllowance& Rs</td>
+            </tr>
+            <tr>
+              <td>Special Allowance</td>
+              <td align="right">&specialAllowance& Rs</td>
+            </tr>
+            <tr>
+              <td>Incentive</td>
+              <td align="right">&incentive& Rs</td>
+            </tr>
+            <tr>
+              <td><b>Gross Salary</b></td>
+              <td align="right"><b>&grossSalary& Rs</b></td>
+            </tr>
+          </table>
+        </td>
+
+        <td>
+          <table class="inner-table">
+            <tr>
+              <td>Professional Tax</td>
+              <td align="right">&pt& Rs</td>
+            </tr>
+            <tr>
+              <td>Provident Fund</td>
+              <td align="right">&pf& Rs</td>
+            </tr>
+            <tr>
+              <td>Employees State Incaurance</td>
+              <td align="right">&esi& Rs</td>
+            </tr>
+            <tr>
+              <td>Income Tax</td>
+              <td align="right">&incomeTax& Rs</td>
+            </tr>
+            <tr>
+              <td>Other</td>
+              <td align="right">&otherDeduction& Rs</td>
+            </tr>
+            <tr>
+              <td><b>Total Deduction</b></td>
+              <td align="right"><b>&totalDeduction& Rs</b></td>
+            </tr>
+
+          </table>
+        </td>
+
+      </tr>
+      <tr class="net">
+        <td colspan="2" class="right">
+          Net Salary : &netSalary& Rs
+        </td>
+      </tr>
+    </table>
+
+    <div class="footer">
+     <b>Authorised by</b><br><br>
+    <em>Dhaval Makadia<br><br>
+    +91 8866 147 354<br><br>
+    <a style="color:#4a4a4a; text-decoration:none;" href="#">dhaval@ominfotechnologies.com</a><br>
+    <p>* This is Computer generated Slip does not require signature.<br><br>
+      * <a style="color:#4a4a4a; text-decoration:none;" href="#">Contact us</a> for any details.</p>
+    </em>
+    </div>
+
+  </div>
+</body>
+
+</html>
