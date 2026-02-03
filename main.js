@@ -2,6 +2,7 @@
    GLOBAL CONFIG
 ===================================================== */
 window.API = "http://localhost:8000";
+window.IMPORT_API = "http://localhost:8001";
 window.siteSettings = null;
 
 

@@ -285,6 +285,14 @@
                 <input id="dbUser" placeholder="Username">
                 <input id="dbPass" type="password" placeholder="Password">
                 <input id="dbName" placeholder="Database name">
+                <select id="tableSelect" style="display:none;margin-top:10px;width:100%">
+                    <option value="">Select table</option>
+                </select>
+
+                <button id="loadTableBtn" style="display:none;margin-top:10px">
+                    Load Table
+                </button>
+
 
                 <div class="modal-actions">
                     <button id="connectDbBtn">Connect</button>
@@ -337,7 +345,7 @@
     </div>
     <script>
         const IMPORT_API = "http://127.0.0.1:8001";
-        const API = "http://127.0.0.1:8001";
+        const API = "http://127.0.0.1:8000";
 
 
         $("#loadBtn").click(() => {
@@ -350,7 +358,7 @@
             tbody.empty();
 
             if (!data.new || data.new.length === 0) {
-                tbody.append(`
+                tbody.append(`\
             <tr>
                 <td colspan="5" style="text-align:center;color:#6b7280">
                     No new employees to import
@@ -362,14 +370,14 @@
 
             data.new.forEach(emp => {
                 const tr = $(`
-        <tr>
-            <td>${emp.full_name}</td>
-            <td>${emp.pan}</td>
-            <td>${emp.email}</td>
-            <td><span class="status new">NEW</span></td>
-            <td><button class="addBtn">Add</button></td>
-        </tr>
-    `).data("emp", emp);
+            <tr>
+                <td>${emp.full_name}</td>
+                <td>${emp.pan}</td>
+                <td>${emp.email || "-"}</td>
+                <td>-</td>
+                <td><button class="addBtn">Add</button></td>
+            </tr>
+        `).data("emp", emp);
 
                 tbody.append(tr);
             });
@@ -426,10 +434,11 @@
                     }
 
                     tr.remove();
+                    btn.disabled = false;
                     loadMainEmployees();
                 });
-
         });
+
 
         $("#uploadBtn").click(() => {
             $("#dbError").text("");
@@ -438,23 +447,11 @@
 
         $("#connectDbBtn").click(() => {
             const payload = {
-                host: $("#dbHost").val().trim(),
-                user: $("#dbUser").val().trim(),
+                host: $("#dbHost").val(),
+                user: $("#dbUser").val(),
                 password: $("#dbPass").val(),
-                database: $("#dbName").val().trim()
+                database: $("#dbName").val()
             };
-
-            // basic validation
-            if (!payload.host || !payload.user || !payload.database) {
-                $("#dbError")
-                    .removeClass("success")
-                    .addClass("error")
-                    .text("Host, username and database are required");
-                return;
-            }
-
-            $("#dbError").text("Connecting...").removeClass("success").removeClass("error");
-            $("#connectDbBtn").prop("disabled", true);
 
             fetch(`${IMPORT_API}/import_from_db`, {
                 method: "POST",
@@ -463,37 +460,40 @@
             })
                 .then(r => r.json())
                 .then(res => {
-                    $("#connectDbBtn").prop("disabled", false);
-
-                    // ❌ connection failed
                     if (res.error) {
-                        $("#dbError")
-                            .removeClass("success")
-                            .addClass("error")
-                            .text("❌ Connection failed: " + res.error);
+                        $("#dbError").text(res.error);
                         return;
                     }
 
-                    // ✅ connection success
-                    $("#dbError")
-                        .removeClass("error")
-                        .addClass("success")
-                        .text("✅ Connection successful");
+                    $("#tableSelect").show().empty()
+                        .append(`<option value="">Select table</option>`);
 
-                    setTimeout(() => {
-                        closeDbModal();
-                        renderImportTable(res);
-                    }, 800);
-                })
-                .catch(() => {
-                    $("#connectDbBtn").prop("disabled", false);
-                    $("#dbError")
-                        .removeClass("success")
-                        .addClass("error")
-                        .text("❌ Server unreachable");
+                    res.tables.forEach(t => {
+                        $("#tableSelect").append(
+                            `<option value="${t.table}">${t.table}</option>`
+                        );
+                    });
+
+                    $("#loadTableBtn").show();
+                    window.importDbPayload = payload;
                 });
         });
 
+        $("#loadTableBtn").click(() => {
+            const table = $("#tableSelect").val();
+            if (!table) return alert("Select table");
+
+            fetch(`${IMPORT_API}/load_import_table`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    ...window.importDbPayload,
+                    table
+                })
+            })
+                .then(r => r.json())
+                .then(renderImportTable);
+        });
 
     </script>
 </body>
